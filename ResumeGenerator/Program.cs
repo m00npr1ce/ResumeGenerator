@@ -1,4 +1,10 @@
+using Microsoft.EntityFrameworkCore;
+using ResumeGenerator;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<ResumeGeneratorContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Add services to the container.
 
@@ -21,3 +27,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
