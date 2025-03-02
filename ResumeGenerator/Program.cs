@@ -19,20 +19,25 @@ builder.Services.AddSingleton<ITokenService>(new TokenService(secretKey, issuer,
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
+        if (string.IsNullOrEmpty(secretKey))
+        {
+            throw new ArgumentException("JWT Secret Key is missing from configuration.");
+        }
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = "YourIssuer",  // Можно взять из конфигурации
-            ValidAudience = "YourAudience",  // Можно взять из конфигурации
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("your-secret-key"))  // Ваш секретный ключ
+            ValidIssuer = issuer,  // Можно взять из конфигурации
+            ValidAudience = audience,  // Можно взять из конфигурации
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))  // Ваш секретный ключ
         };
     });
 
 builder.Services.AddDbContext<ResumeGeneratorContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 
 // Add services to the container.
 
