@@ -52,3 +52,4 @@
 /Users/vanyarudakov/Documents/pls/ResumeApi/bin/Debug/net9.0/Swashbuckle.AspNetCore.SwaggerUI.dll
 /Users/vanyarudakov/Documents/pls/ResumeApi/bin/Debug/net9.0/BouncyCastle.Cryptography.dll
 /Users/vanyarudakov/Documents/pls/ResumeApi/bin/Debug/net9.0/itext.bouncy-castle-adapter.dll
+/Users/vanyarudakov/Documents/pls/ResumeApi/obj/Debug/net9.0/ResumeApi.sourcelink.json
