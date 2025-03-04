@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "bjiyJGcWRBq6uyTGLzqRAweLM2RJiPhG0C07WqFJ7iA=",
+  "Source": "ResumeApi",
+  "BasePath": "_content/ResumeApi",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}
