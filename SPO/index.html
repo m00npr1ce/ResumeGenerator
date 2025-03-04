@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Генератор</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <a href="/" class="logo-link">
+            <div class="logo-container">
+              <span class="logo-highlight">Mr</span>
+            </div>
+          </a>
+        <div class="header-buttons">
+            <button id="auth-button">Авторизация</button>
+            <button id="my-button">Мои резюме</button>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <button id="generate-button">Сгенерировать</button>
+    </main>
+
+    <footer>
+        <p>МИРЭА ©</p>
+    </footer>
+
+    <script>
+        document.getElementById('auth-button').addEventListener('click', function() {
+            window.location.href = 'register.html'; // Переход на страницу регистрации
+        });
+
+        document.getElementById('my-button').addEventListener('click', function() {
+            window.location.href = 'my_page.html';  // Переход на страницу "Мои"
+        });
+
+        document.getElementById('generate-button').addEventListener('click', function() {
+            alert('Генерация!'); // Замените на логику генерации
+        });
+    </script>
+
+</body>
+</html>

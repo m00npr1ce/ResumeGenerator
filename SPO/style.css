@@ -1,0 +1,170 @@
+/* Общие стили */
+body {
+    font-family: 'Arial', sans-serif; /* Более распространенный шрифт */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #f8f9fa; /* Светлый фон */
+    color: #343a40; /* Темный текст для контраста */
+}
+
+header {
+    background-color: #ffffff; /* Белый фон для шапки */
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Тень для шапки */
+    
+}
+
+header a{
+    text-decoration: none;
+   
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #007bff; /* Синий цвет для логотипа */
+}
+
+.header-buttons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease; /* Плавный переход цвета фона */
+}
+
+#auth-button {
+    background-color: #007bff;
+    color: white;
+}
+
+#my-button {
+    background-color: #6c757d;
+    color: white;
+}
+
+.main-content {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px; /* Отступы вокруг содержимого */
+}
+
+#generate-button {
+    font-size: 36px;
+    background-color: #28a745; /* Зеленый цвет для кнопки */
+    color: white;
+    padding: 20px 40px;
+    border-radius: 10px;
+}
+
+/* Стили для регистрации */
+.registration-form {
+    width: 400px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.registration-form label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.registration-form input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    box-sizing: border-box; /* Важно для правильной ширины */
+}
+
+.registration-form button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+}
+
+/* Стили для страницы "Мои" */
+.my-page-content {
+    text-align: center;
+}
+
+/* Дополнительные стили для придания визуальной привлекательности */
+button:hover {
+    opacity: 0.8;
+}
+
+#generate-button:hover {
+    background-color: #1e7e34;
+}
+footer {
+    text-align: center;
+    border-top: 1px solid #ccc;
+    padding: 10px;
+}
+.logo-link {
+    text-decoration: none;
+  }
+
+  .logo-container {
+    display: inline-block;
+    font-family: sans-serif;
+    font-size: 2em;
+    font-weight: bold;
+    color: #333;
+    border: 2px solid #333;
+    padding: 5px 10px;
+    border-radius: 5px;
+  }
+
+  .logo-highlight {
+    color: #007bff;
+  }
+  /* Стили для контейнера списка резюме */
+#resume-list-container {
+    padding: 10px;
+}
+
+/* Стили для заглушки (когда резюме нет) */
+#resume-list-container p {
+    font-style: italic;
+    color: #777;
+    text-align: center;
+}
+
+/* Стили для кнопки "Добавить резюме" */
+#add-resume-button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: block; /* Чтобы кнопка занимала всю ширину */
+    margin: 20px auto; /* Центрирование кнопки */
+}
+
+#add-resume-button:hover {
+    opacity: 0.8;
+}
