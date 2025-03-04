@@ -13,6 +13,16 @@ var secretKey = builder.Configuration["Jwt:SecretKey"];
 var issuer = builder.Configuration["Jwt:Issuer"];
 var audience = builder.Configuration["Jwt:Audience"];
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllOrigins", policy =>
+    {
+        policy.AllowAnyOrigin()  // Разрешает любой источник
+              .AllowAnyMethod()  // Разрешает любые HTTP методы (GET, POST, и т.д.)
+              .AllowAnyHeader(); // Разрешает любые заголовки
+    });
+});
+
 // Регистрируем сервис
 builder.Services.AddSingleton<ITokenService>(new TokenService(secretKey, issuer, audience));
 
@@ -52,6 +62,8 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
+
+app.UseCors("AllowAllOrigins");
 
 app.UseHttpsRedirection();
 
