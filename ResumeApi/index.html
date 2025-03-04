@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Генератор</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1{
+            text-align: center;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .section {
+            margin-bottom: 20px;
+            border: 1px solid #eee;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        .section-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="/" class="logo-link">
+            <div class="logo-container">
+              <span class="logo-highlight">Mr</span>
+            </div>
+          </a>
+        <div class="header-buttons">
+            <button id="auth-button">Авторизация</button>
+            <button id="my-button">Мои резюме</button>
+        </div>
+    </header>
+
+    <main class="main-content">
+
+
+        <form id="resumeForm">
+            <h1>Создание резюме</h1>
+            <div class="section">
+                <h2 class="section-title">Личная информация</h2>
+                <label for="fullName">ФИО:</label>
+                <input type="text" id="fullName" name="fullName" required><br>
+
+                <label for="email">Email:</label>
+                <input type="text" id="email" name="email" required><br>
+
+                <label for="phone">Телефон:</label>
+                <input type="text" id="phone" name="phone" required><br>
+
+                <label for="address">Адрес:</label>
+                <input type="text" id="address" name="address"><br>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">Опыт работы</h2>
+                <label for="experience">Опыт (описание):</label>
+                <textarea id="experience" name="experience" rows="4"></textarea><br>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">Образование</h2>
+                <label for="education">Образование (описание):</label>
+                <textarea id="education" name="education" rows="3"></textarea><br>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">Навыки</h2>
+                <label for="skills">Навыки (перечислите через запятую):</label>
+                <input type="text" id="skills" name="skills"><br>
+            </div>
+
+            <button id="generate-button" type="button" onclick="generatePDF()">Создать PDF</button>
+        </form>
+
+    </main>
+
+    <footer>
+        <p>МИРЭА ©</p>
+    </footer>
+
+    <script>
+        function generatePDF() {
+            const fullName = document.getElementById('fullName').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const address = document.getElementById('address').value;
+            const experience = document.getElementById('experience').value;
+            const education = document.getElementById('education').value;
+            const skills = document.getElementById('skills').value;
+
+            const data = {
+                FullName: fullName,
+                Email: email,
+                Phone: phone,
+                Address: address,
+                Experience: experience,
+                Education: education,
+                Skills: skills
+            };
+
+            fetch('http://localhost:5173/api/resume/generate', {  // Замените <port> на фактический порт
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'resume.pdf';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+            });
+        }
+        document.getElementById('auth-button').addEventListener('click', function() {
+            window.location.href = 'register.html'; // Переход на страницу регистрации
+        });
+
+        document.getElementById('my-button').addEventListener('click', function() {
+            window.location.href = 'my_page.html';  // Переход на страницу "Мои"
+        });
+
+    </script>
+
+</body>
+</html>
