@@ -36,7 +36,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.UseHttpRedirection();
+app.UseHttpsRedirection();
 
 // Включите CORS middleware
 app.UseCors("AllowMyOrigin");
