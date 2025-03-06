@@ -8,9 +8,10 @@ namespace ResumeGenerator.Services
 {
     public class TokenService : ITokenService
     {
-        private readonly string _secretKey;
-        private readonly string _issuer;
-        private readonly string _audience;
+        private readonly string _secretKey = "25h3lkh6kl32jj6jh4557jk4lk57hjjk6745j67lk45j345";
+        private readonly string _issuer = "http://localhost:5107";
+        private readonly string _audience = "http://localhost:5107";
+    
 
         public TokenService(string secretKey, string issuer, string audience)
         {
