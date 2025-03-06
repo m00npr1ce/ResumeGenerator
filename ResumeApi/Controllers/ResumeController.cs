@@ -6,6 +6,7 @@ using iText.Layout.Element;
 using System.IO;
 using iText.Kernel.Font;
 using iText.IO.Font.Constants;
+using iText.IO.Image;
 
 namespace ResumeApi.Controllers
 {
@@ -58,6 +59,20 @@ namespace ResumeApi.Controllers
                                 document.SetFont(font);
 
                                 document.Add(new Paragraph("Резюме").SetFontSize(16));
+                                // Путь к изображению (относительно каталога проекта)
+                                string imagePath = Path.Combine(Directory.GetCurrentDirectory(), "Images", "photo_2025-03-06_00-02-59.jpg"); // Замените на имя вашего файла
+                                if (System.IO.File.Exists(imagePath))
+                                {
+                                    ImageData iData = ImageDataFactory.Create(imagePath);
+                                    Image image = new Image(iData);
+                                    image.SetWidth(300); // Задайте желаемую ширину
+                                    document.Add(image);
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Файл изображения не найден: " + imagePath);
+                                }
+
                                 document.Add(new Paragraph($"ФИО: {data.FullName}"));
                                 document.Add(new Paragraph($"Email: {data.Email}"));
                                 document.Add(new Paragraph($"Телефон: {data.Phone}"));

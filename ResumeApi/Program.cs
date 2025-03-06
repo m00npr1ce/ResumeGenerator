@@ -10,7 +10,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowMyOrigin",
         builder =>
         {
-            builder.WithOrigins("http://127.0.0.1:5500") // Замените на фактический origin вашего HTML
+            builder.AllowAnyOrigin()//WithOrigins("http://127.0.0.1:5500") // Замените на фактический origin вашего HTML
                    .AllowAnyMethod()
                    .AllowAnyHeader();
         });
@@ -36,7 +36,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.UseHttpRedirection();
+app.UseHttpsRedirection();
 
 // Включите CORS middleware
 app.UseCors("AllowMyOrigin");
