@@ -48,6 +48,7 @@ namespace ResumeGenerator.Controllers
             }
 
             var token = _tokenService.GenerateToken(user.Email);
+
             return Ok(new { Token = token });
         }
 

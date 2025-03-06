@@ -56,13 +56,13 @@
 <body>
 
 <header>
-    <a href="index.html" class="logo-link">
+    <a href="/" class="logo-link">
         <div class="logo-container">
             <span class="logo-highlight">Mr</span>
         </div>
     </a>
     <div class="header-buttons">
-        <button id="auth-button">Выйти</button>
+        <button id="auth-button">Авторизация</button>
         <button id="my-button">Мои резюме</button>
     </div>
 </header>
@@ -107,6 +107,7 @@
         <!-- Кнопка для улучшения текста -->
         <button id="improve-button" type="button" onclick="improveText()">Улучшить</button>
         <button id="generate-button" type="button" onclick="generatePDF()">Создать PDF</button>
+        <button id="save-button" type="button" onclick="saveText()">Сохранить</button>
     </form>
 
 </main>
@@ -116,6 +117,73 @@
 </footer>
 
 <script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const resumeData = localStorage.getItem('editingResume');
+    if (resumeData) {
+        const resume = JSON.parse(resumeData);
+
+        document.getElementById('fullName').value = resume.title.toString().substring(10) || '';
+        document.getElementById('email').value = resume.email || '';
+        document.getElementById('phone').value = resume.phone || '';
+        document.getElementById('address').value = resume.address || '';
+        document.getElementById('experience').value = resume.experience || '';
+        document.getElementById('education').value = resume.education || '';
+        document.getElementById('skills').value = resume.skills || '';
+
+        // Очищаем localStorage, чтобы не было конфликтов при следующем редактировании
+        localStorage.removeItem('editingResume');
+    }
+});
+
+    async function saveText() {
+       
+        const fullName = document.getElementById('fullName').value;
+        const email = document.getElementById('email').value;
+        const phone = document.getElementById('phone').value;
+        const address = document.getElementById('address').value;
+        const experience = document.getElementById('experience').value;
+        const education = document.getElementById('education').value;
+        const skills = document.getElementById('skills').value;
+
+        const data = {
+            fullName: fullName,
+            email: email,
+            phone: phone,
+            address: address,
+            experience: experience,
+            education: education,
+            skills: skills
+        };
+
+        try {
+            const token = localStorage.getItem('token');  // Извлекаем токен из localStorage
+            
+            if (!token) {
+                alert('Вы не авторизованы');
+                return;
+            }
+            console.log(token);
+            const response = await fetch('https://localhost:7028/api/resume/save', {  // Замените порт на фактический порт вашего бэкенда
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`  // Передаем токен в заголовке
+                },
+                body: JSON.stringify(data),
+                credentials: 'include'
+            });
+
+            if (response.ok) {
+                alert('Резюме успешно сохранено!');
+            } else {
+                alert('Произошла ошибка при сохранении резюме.');
+            }
+        } catch (error) {
+            console.error(error);
+            alert('Произошла ошибка.');
+        }
+    }
+
     function generateUUID() {
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
             var r = Math.random() * 16 | 0,
@@ -132,10 +200,12 @@
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
+                'Accept': 'application/json',
                 'RqUID': uuid,
                 'Authorization': `Basic ${key}`
             },
-            body: new URLSearchParams({ scope: 'GIGACHAT_API_PERS' }).toString()
+            body: new URLSearchParams({ 'scope': 'GIGACHAT_API_PERS' }),
+            mode: 'no-cors'            
         });
 
         if (!tokenResponse.ok) {
