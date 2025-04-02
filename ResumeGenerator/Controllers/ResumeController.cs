@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.Json;
 // Для работы с асинхронными методами, такими как FirstOrDefaultAsync
 
 
@@ -20,6 +21,27 @@ public class ResumeController : ControllerBase
     {
         _context = context;
         _httpClient = httpClient;
+    }
+
+    [HttpPost("improve-text")]
+    public async Task<IActionResult> ImproveText([FromBody] ResumeRequest request)
+    {
+        var token = await GetTokenAsync();
+        if (string.IsNullOrEmpty(token))
+        {
+            return BadRequest("Ошибка получения токена GigaChat.");
+        }
+
+        var improvedExperience = await ImproveTextWithGigaChat(request.Experience, token);
+        var improvedEducation = await ImproveTextWithGigaChat(request.Education, token);
+        var improvedSkills = await ImproveTextWithGigaChat(request.Skills, token);
+
+        return Ok(new
+        {
+            experience = improvedExperience,
+            education = improvedEducation,
+            skills = improvedSkills
+        });
     }
 
     private async Task<string> GetTokenAsync()
@@ -45,6 +67,43 @@ public class ResumeController : ControllerBase
         }
 
         return null; // Если запрос не успешен, возвращаем null
+    }
+
+    private async Task<string> ImproveTextWithGigaChat(string text, string token)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+        {
+            return text; // Возвращаем оригинальный текст, если он пуст
+        }
+
+        var requestBody = new
+        {
+            model = "GigaChat",
+            messages = new[]
+            {
+                new { role = "system", content = "Ты профессиональный редактор. Улучши текст пользователя, так чтобы он был более пригодным для резюме. Также можешь отдельно после текста написать предложения и замечания, как можно улучшить текст." },
+                new { role = "user", content = text }
+            },
+            stream = false,
+            update_interval = 0
+        };
+
+        var jsonContent = new StringContent(JsonSerializer.Serialize(requestBody), Encoding.UTF8, "application/json");
+
+        _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+        var response = await _httpClient.PostAsync("https://gigachat.devices.sberbank.ru/api/v1/chat/completions", jsonContent);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            return text; // Если ошибка, возвращаем оригинальный текст
+        }
+
+        var responseData = await response.Content.ReadAsStringAsync();
+        using var jsonDoc = JsonDocument.Parse(responseData);
+        var improvedText = jsonDoc.RootElement.GetProperty("choices")[0].GetProperty("message").GetProperty("content").GetString();
+
+        return improvedText ?? text;
     }
 
     [HttpPost("save")]
@@ -147,6 +206,13 @@ public class ResumeDto
     public string Email { get; set; }
     public string Phone { get; set; }
     public string Address { get; set; }
+    public string Experience { get; set; }
+    public string Education { get; set; }
+    public string Skills { get; set; }
+}
+
+public class ResumeRequest
+{
     public string Experience { get; set; }
     public string Education { get; set; }
     public string Skills { get; set; }
