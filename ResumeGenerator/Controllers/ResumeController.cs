@@ -2,7 +2,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ResumeGenerator;
 using System.Security.Claims;
-using Microsoft.EntityFrameworkCore;  // Для работы с асинхронными методами, такими как FirstOrDefaultAsync
+using Microsoft.EntityFrameworkCore;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
+// Для работы с асинхронными методами, такими как FirstOrDefaultAsync
 
 
 [ApiController]
@@ -10,10 +14,37 @@ using Microsoft.EntityFrameworkCore;  // Для работы с асинхрон
 public class ResumeController : ControllerBase
 {
     private readonly ResumeGeneratorContext _context;
+    private readonly HttpClient _httpClient;
 
-    public ResumeController(ResumeGeneratorContext context)
+    public ResumeController(ResumeGeneratorContext context, HttpClient httpClient)
     {
         _context = context;
+        _httpClient = httpClient;
+    }
+
+    private async Task<string> GetTokenAsync()
+    {
+        var request = new HttpRequestMessage(HttpMethod.Post, "https://ngw.devices.sberbank.ru:9443/api/v2/oauth")
+        {
+            Headers =
+            {
+                { "RqUID", "aa398b41-b6d1-4bde-982b-333fd08faf15" },
+                { "Authorization", "Basic OTdlMzRkYzItMTIwNS00ZGRjLTg1OTktNzEyMmYyZDA5ZGJiOmI0ZjhjYmU2LThiNjctNDNjOS04N2RiLTU4ZDNhNDI3NDc3Mw==" }
+            },
+            Content = new StringContent("scope=GIGACHAT_API_PERS", Encoding.UTF8, "application/x-www-form-urlencoded")
+        };
+
+        var response = await _httpClient.SendAsync(request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var responseData = await response.Content.ReadAsStringAsync();
+            // Предположим, что токен возвращается в формате JSON в поле "access_token"
+            var token = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(responseData)?.access_token;
+            return token;
+        }
+
+        return null; // Если запрос не успешен, возвращаем null
     }
 
     [HttpPost("save")]
@@ -94,6 +125,18 @@ public class ResumeController : ControllerBase
             .ToList();
 
         return Ok(resumes);
+    }
+
+    [HttpGet("get-token")]
+    public async Task<IActionResult> GetToken()
+    {
+        var token = await GetTokenAsync();
+        if (token == null)
+        {
+            return Unauthorized("Не удалось получить токен.");
+        }
+
+        return Ok(new { token });
     }
 
 }

@@ -193,104 +193,122 @@
     }
 
     async function getToken() {
-        const uuid = generateUUID();
-        const key = "OTdlMzRkYzItMTIwNS00ZGRjLTg1OTktNzEyMmYyZDA5ZGJiOmI0ZjhjYmU2LThiNjctNDNjOS04N2RiLTU4ZDNhNDI3NDc3Mw=="; // Ваш ключ авторизации
-
-        const tokenResponse = await fetch('https://ngw.devices.sberbank.ru:9443/api/v2/oauth', {
-            method: 'POST',
+        try {
+        const response = await fetch('https://localhost:7028/api/resume/get-token', {
+            method: 'GET',
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'Accept': 'application/json',
-                'RqUID': uuid,
-                'Authorization': `Basic ${key}`
-            },
-            body: new URLSearchParams({ 'scope': 'GIGACHAT_API_PERS' }),
-            mode: 'no-cors'            
+                'Authorization': 'Bearer your_access_token' // Если необходимо передать токен авторизации
+            }
         });
 
-        if (!tokenResponse.ok) {
-            throw new Error(`Failed to retrieve access token: ${await tokenResponse.text()}`);
+        if (!response.ok) {
+            throw new Error('Ошибка получения токена');
         }
 
-        return (await tokenResponse.json()).access_token;
+        const data = await response.json();
+        console.log('Токен:', data.token); // Здесь будет ваш токен
+
+    } catch (error) {
+        console.error('Ошибка:', error);
+    }
+        // const uuid = generateUUID();
+        // const key = "OTdlMzRkYzItMTIwNS00ZGRjLTg1OTktNzEyMmYyZDA5ZGJiOmI0ZjhjYmU2LThiNjctNDNjOS04N2RiLTU4ZDNhNDI3NDc3Mw=="; // Ваш ключ авторизации
+
+        // const tokenResponse = await fetch('https://ngw.devices.sberbank.ru:9443/api/v2/oauth', {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/x-www-form-urlencoded',
+        //         'Accept': 'application/json',
+        //         'RqUID': uuid,
+        //         'Authorization': `Basic ${key}`
+        //     },
+        //     body: new URLSearchParams({ 'scope': 'GIGACHAT_API_PERS' }),
+        //     mode: 'no-cors'            
+        // });
+
+        // if (!tokenResponse.ok) {
+        //     throw new Error(`Failed to retrieve access token: ${await tokenResponse.text()}`);
+        // }
+
+        // return (await tokenResponse.json()).access_token;
     }
 
     async function improveText() {
         const token = await getToken(); // Получаем токен доступа
+        console.log(token);
+        // const experience = document.getElementById('experience').value;
+        // const education = document.getElementById('education').value;
+        // const skills = document.getElementById('skills').value;
 
-        const experience = document.getElementById('experience').value;
-        const education = document.getElementById('education').value;
-        const skills = document.getElementById('skills').value;
+        // try {
+        //     const clientId = "your-client-id";
+        //     const requestId = "your-request-id";
+        //     const sessionId = "your-session-id";
 
-        try {
-            const clientId = "your-client-id";
-            const requestId = "your-request-id";
-            const sessionId = "your-session-id";
+        //     const responses = await Promise.all([
+        //         fetch('https://gigachat.devices.sberbank.ru/api/v1/chat/completions', {
+        //             method: 'POST',
+        //             headers: {
+        //                 'Content-Type': 'application/json',
+        //                 'Authorization': `Bearer ${token}`, // Передача токена в заголовке
 
-            const responses = await Promise.all([
-                fetch('https://gigachat.devices.sberbank.ru/api/v1/chat/completions', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`, // Передача токена в заголовке
+        //             },
+        //             body: JSON.stringify({
+        //                 model: 'GigaChat', // Указываем модель для обработки текста
+        //                 messages: [{
+        //                     role: 'user',
+        //                     content: `Улучшите этот текст, сделав его более структурированным и профессиональным: ${experience}`
+        //                 }],
+        //                 attachments: [] // Если нужны файлы, добавьте их идентификаторы здесь
+        //             })
+        //         }),
+        //         fetch('https://gigachat.devices.sberbank.ru/api/v1/chat/completions', {
+        //             method: 'POST',
+        //             headers: {
+        //                 'Content-Type': 'application/json',
+        //                 'Authorization': `Bearer ${token}`, // Передача токена в заголовке
 
-                    },
-                    body: JSON.stringify({
-                        model: 'GigaChat', // Указываем модель для обработки текста
-                        messages: [{
-                            role: 'user',
-                            content: `Улучшите этот текст, сделав его более структурированным и профессиональным: ${experience}`
-                        }],
-                        attachments: [] // Если нужны файлы, добавьте их идентификаторы здесь
-                    })
-                }),
-                fetch('https://gigachat.devices.sberbank.ru/api/v1/chat/completions', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`, // Передача токена в заголовке
+        //             },
+        //             body: JSON.stringify({
+        //                 model: 'GigaChat', // Указываем модель для обработки текста
+        //                 messages: [{
+        //                     role: 'user',
+        //                     content: `Улучшите этот текст, сделав его более структурированным и профессиональным: ${education}`
+        //                 }],
+        //                 attachments: []
+        //             })
+        //         }),
+        //         fetch('https://gigachat.devices.sberbank.ru/api/v1/chat/completions', {
+        //             method: 'POST',
+        //             headers: {
+        //                 'Content-Type': 'application/json',
+        //                 'Authorization': `Bearer ${token}`, // Передача токена в заголовке
 
-                    },
-                    body: JSON.stringify({
-                        model: 'GigaChat', // Указываем модель для обработки текста
-                        messages: [{
-                            role: 'user',
-                            content: `Улучшите этот текст, сделав его более структурированным и профессиональным: ${education}`
-                        }],
-                        attachments: []
-                    })
-                }),
-                fetch('https://gigachat.devices.sberbank.ru/api/v1/chat/completions', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`, // Передача токена в заголовке
+        //             },
+        //             body: JSON.stringify({
+        //                 model: 'GigaChat', // Указываем модель для обработки текста
+        //                 messages: [{
+        //                     role: 'user',
+        //                     content: `Улучшите этот текст, сделав его более структурированным и профессиональным: ${skills}`
+        //                 }],
+        //                 attachments: []
+        //             })
+        //         })
+        //     ]);
 
-                    },
-                    body: JSON.stringify({
-                        model: 'GigaChat', // Указываем модель для обработки текста
-                        messages: [{
-                            role: 'user',
-                            content: `Улучшите этот текст, сделав его более структурированным и профессиональным: ${skills}`
-                        }],
-                        attachments: []
-                    })
-                })
-            ]);
+        //     const improvedExperience = await responses[0].json().choices[0].message.content;
+        //     const improvedEducation = await responses[1].json().choices[0].message.content;
+        //     const improvedSkills = await responses[2].json().choices[0].message.content;
 
-            const improvedExperience = await responses[0].json().choices[0].message.content;
-            const improvedEducation = await responses[1].json().choices[0].message.content;
-            const improvedSkills = await responses[2].json().choices[0].message.content;
+        //     document.getElementById('experience').value = improvedExperience;
+        //     document.getElementById('education').value = improvedEducation;
+        //     document.getElementById('skills').value = improvedSkills;
 
-            document.getElementById('experience').value = improvedExperience;
-            document.getElementById('education').value = improvedEducation;
-            document.getElementById('skills').value = improvedSkills;
-
-            alert("Текст успешно улучшен!");
-        } catch (error) {
-            console.error(error);
-            alert("Произошла ошибка при улучшении текста.");
-        }
+        //     alert("Текст успешно улучшен!");
+        // } catch (error) {
+        //     console.error(error);
+        //     alert("Произошла ошибка при улучшении текста.");
+        // }
     }
 
     function generatePDF() {
