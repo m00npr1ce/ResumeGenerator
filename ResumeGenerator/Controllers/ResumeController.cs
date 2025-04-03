@@ -129,7 +129,7 @@ public class ResumeController : ControllerBase
         var resume = new Resume
         {
             Title = $"Резюме от {resumeDto.FullName}",
-            Content = $"{resumeDto.Email}\n{resumeDto.Phone}\n{resumeDto.Address}\n{resumeDto.Experience}\n{resumeDto.Education}\n{resumeDto.Skills}",
+            Content = $"{resumeDto.Email}```{resumeDto.Phone}```{resumeDto.Address}```{resumeDto.Experience}```{resumeDto.Education}```{resumeDto.Skills}",
             UserId = user.Id,
             CreatedAt = DateTime.UtcNow
         };
@@ -166,7 +166,7 @@ public class ResumeController : ControllerBase
             {
                 r.Id,
                 r.Title,
-                ContentParts = r.Content.Split('\n'), // Разбиваем Content на части
+                ContentParts = r.Content.Split("```"), // Разбиваем Content на части
                 r.CreatedAt
             })
             .Select(r => new
