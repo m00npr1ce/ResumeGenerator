@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json;
+using Markdig;
 // Для работы с асинхронными методами, такими как FirstOrDefaultAsync
 
 
@@ -35,12 +36,16 @@ public class ResumeController : ControllerBase
         var improvedExperience = await ImproveTextWithGigaChat(request.Experience, token);
         var improvedEducation = await ImproveTextWithGigaChat(request.Education, token);
         var improvedSkills = await ImproveTextWithGigaChat(request.Skills, token);
+        var pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
+        var htmlImprovedExperience = Markdown.ToPlainText(improvedExperience);
+        var htmlImprovedEducation = Markdown.ToPlainText(improvedEducation);
+        var htmlImprovedSkills = Markdown.ToPlainText(improvedSkills);        
 
         return Ok(new
         {
-            experience = improvedExperience,
-            education = improvedEducation,
-            skills = improvedSkills
+            experience = htmlImprovedExperience,
+            education = htmlImprovedEducation,
+            skills = htmlImprovedSkills
         });
     }
 
@@ -81,7 +86,7 @@ public class ResumeController : ControllerBase
             model = "GigaChat",
             messages = new[]
             {
-                new { role = "system", content = "Ты профессиональный редактор. Улучши текст пользователя, так чтобы он был более пригодным для резюме. Также можешь отдельно после текста написать предложения и замечания, как можно улучшить текст." },
+                new { role = "system", content = "Ты профессиональный редактор. Улучши текст пользователя, так чтобы он был более пригодным для резюме. Также можешь отдельно после текста написать предложения и замечания, как можно улучшить текст, чтобы он был более выгодным для резюме. В твоем ответе не должно быть ничего лишнего, только улучшенный текст и ниже в кавычках рекоммендации по улучшению (если требуется)" },
                 new { role = "user", content = text }
             },
             stream = false,

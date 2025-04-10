@@ -1,170 +1,335 @@
-/* Общие стили */
-body {
-    font-family: 'Arial', sans-serif; /* Более распространенный шрифт */
+/* === Базовые настройки === */
+* {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f2f4f8;
+    color: #333;
+    line-height: 1.6;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    background-color: #f8f9fa; /* Светлый фон */
-    color: #343a40; /* Темный текст для контраста */
 }
 
+/* === Header === */
 header {
-    background-color: #ffffff; /* Белый фон для шапки */
-    padding: 10px 20px;
+    background-color: #ffffff;
+    padding: 15px 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Тень для шапки */
-    
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
 
-header a{
+.logo-link {
     text-decoration: none;
-   
 }
 
-.logo {
-    font-size: 24px;
+.logo-container {
+    font-size: 1.8em;
     font-weight: bold;
-    color: #007bff; /* Синий цвет для логотипа */
+    color: #222;
+    border: 2px solid #007bff;
+    padding: 6px 14px;
+    border-radius: 12px;
+    transition: 0.3s;
 }
 
-.header-buttons {
-    display: flex;
-    gap: 10px;
-    align-items: center;
+.logo-container:hover {
+    background-color: #007bff;
+    color: #fff;
 }
 
-button {
-    padding: 10px 20px;
-    font-size: 16px;
+.logo-highlight {
+    color: #007bff;
+}
+
+.header-buttons button {
+    background-color: transparent;
+    border: 2px solid #007bff;
+    color: #007bff;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 10px;
+    margin-left: 12px;
     cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.header-buttons button:hover {
+    background-color: #007bff;
+    color: #fff;
+}
+
+/* === Main Content === */
+.main-content {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px 20px;
+}
+
+form#resumeForm {
+    background-color: #ffffff;
+    width: 100%;
+    max-width: 720px;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
+}
+
+h1 {
+    font-size: 28px;
+    text-align: center;
+    margin-bottom: 30px;
+    color: #222;
+}
+
+/* === Секции формы === */
+.section {
+    margin-bottom: 25px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.section:last-child {
+    border-bottom: none;
+}
+
+.section-title {
+    font-size: 1.2em;
+    color: #007bff;
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #444;
+}
+
+input[type="text"],
+textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 14px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    font-size: 15px;
+    transition: border 0.2s ease;
+}
+
+input[type="text"]:focus,
+textarea:focus {
+    border-color: #007bff;
+    outline: none;
+    background-color: #fff;
+}
+
+/* === Кнопки === */
+button {
+    font-size: 16px;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
     border: none;
-    border-radius: 5px;
-    transition: background-color 0.3s ease; /* Плавный переход цвета фона */
+}
+
+#generate-button {
+    background-color: #007BFF;
+    color: white;
+    font-size: 18px;
+    margin-right: 10px;
+}
+
+#improve-button {
+    background-color: #E0F0FF;
+    color: #007BFF;
+    margin-right: 10px;
+}
+
+#save-button {
+    background-color: #0056b3;
+    color: white;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+/* === Footer === */
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #fff;
+    border-top: 1px solid #ddd;
+    font-size: 14px;
+    color: #777;
+    margin-top: auto;
+}
+/* === Страница "Мои резюме" === */
+.my-page-content {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 40px 30px;
+    border-radius: 16px;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
+}
+
+.my-page-content h2 {
+    font-size: 26px;
+    color: #222;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+/* Контейнер с резюме */
+#resume-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 10px 0;
+}
+
+/* Сообщение-заглушка */
+#resume-list-container p {
+    font-style: italic;
+    color: #888;
+    text-align: center;
+}
+
+/* Одна карточка резюме */
+.resume-item {
+    background-color: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-left: 5px solid #007bff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    transition: transform 0.2s ease;
+}
+
+.resume-item:hover {
+    transform: translateY(-3px);
+}
+
+.resume-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #007bff;
+}
+
+.resume-description {
+    font-size: 15px;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.resume-item a {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+.resume-item a:hover {
+    color: #0056b3;
+}
+
+/* Кнопка "Добавить резюме" */
+#add-resume-button {
+    background-color: #007bff;
+    color: white;
+    padding: 14px 30px;
+    font-size: 16px;
+    border-radius: 10px;
+    border: none;
+    margin: 30px auto 0;
+    display: block;
+    transition: background-color 0.3s ease;
+}
+
+#add-resume-button:hover {
+    background-color: #0056b3;
+}
+
+/* === Страница регистрации === */
+.registration-form {
+    background-color: #fff;
+    padding: 40px 30px;
+    border-radius: 16px;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.registration-form h2 {
+    text-align: center;
+    font-size: 26px;
+    margin-bottom: 20px;
+    color: #222;
+}
+
+.registration-form label {
+    font-weight: 600;
+    color: #333;
+}
+
+.registration-form input {
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.registration-form input:focus {
+    border-color: #007bff;
+}
+
+#register-button {
+    background-color: #007bff;
+    color: white;
+    font-size: 16px;
+    padding: 12px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+#register-button:hover {
+    background-color: #0056b3;
 }
 
 #auth-button {
     background-color: #007bff;
     color: white;
+    font-size: 16px;
+    padding: 12px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
 }
 
-#my-button {
-    background-color: #6c757d;
-    color: white;
-}
-
-.main-content {
-    flex-grow: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px; /* Отступы вокруг содержимого */
-}
-
-#generate-button {
-    font-size: 41px;
-    background-color: #28a745; /* Зеленый цвет для кнопки */
-    color: white;
-    padding: 20px 40px;
-    border-radius: 10px;
-}
-
-/* Стили для регистрации */
-.registration-form {
-    width: 400px;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.registration-form label {
-    display: block;
-    margin-bottom: 5px;
-}
-
-.registration-form input {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
-    border: 1px solid #ced4da;
-    border-radius: 4px;
-    box-sizing: border-box; /* Важно для правильной ширины */
-}
-
-.registration-form button {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 100%;
-}
-
-/* Стили для страницы "Мои" */
-.my-page-content {
-    text-align: center;
-}
-
-/* Дополнительные стили для придания визуальной привлекательности */
-button:hover {
-    opacity: 0.8;
-}
-
-#generate-button:hover {
-    background-color: #1e7e34;
-}
-footer {
-    text-align: center;
-    border-top: 1px solid #ccc;
-    padding: 10px;
-}
-.logo-link {
-    text-decoration: none;
-  }
-
-  .logo-container {
-    display: inline-block;
-    font-family: sans-serif;
-    font-size: 2em;
-    font-weight: bold;
-    color: #333;
-    border: 2px solid #333;
-    padding: 5px 10px;
-    border-radius: 5px;
-  }
-
-  .logo-highlight {
-    color: #007bff;
-  }
-  /* Стили для контейнера списка резюме */
-#resume-list-container {
-    padding: 10px;
-}
-
-/* Стили для заглушки (когда резюме нет) */
-#resume-list-container p {
-    font-style: italic;
-    color: #777;
-    text-align: center;
-}
-
-/* Стили для кнопки "Добавить резюме" */
-#add-resume-button {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    display: block; /* Чтобы кнопка занимала всю ширину */
-    margin: 20px auto; /* Центрирование кнопки */
-}
-
-#add-resume-button:hover {
-    opacity: 0.8;
+#auth-button:hover {
+    background-color: #0056b3;
 }
